@@ -77,14 +77,16 @@ Render Functions
 */
 
 const renderCurrentWeather = (currentWeather: any): void => {
-  const { city, date, icon, iconDescription, tempF, windSpeed, humidity } =
+  const { cityName, date, icon, iconDescription, tempF, windSpeed, humidity } =
     currentWeather;
-
+console.log(currentWeather);
+console.log(icon);
   // convert the following to typescript
-  heading.textContent = `${city} (${date})`;
+  heading.textContent = `${cityName} (${date})`;
   weatherIcon.setAttribute(
     'src',
-    `https://openweathermap.org/img/w/${icon}.png`
+    icon
+    
   );
   weatherIcon.setAttribute('alt', iconDescription);
   weatherIcon.setAttribute('class', 'weather-img');
@@ -127,7 +129,7 @@ const renderForecastCard = (forecast: any) => {
   cardTitle.textContent = date;
   weatherIcon.setAttribute(
     'src',
-    `https://openweathermap.org/img/w/${icon}.png`
+    icon
   );
   weatherIcon.setAttribute('alt', iconDescription);
   tempEl.textContent = `Temp: ${tempF} °F`;
@@ -234,10 +236,10 @@ const createHistoryDiv = () => {
   return div;
 };
 
-const buildHistoryListItem = (city: any) => {
-  const newBtn = createHistoryButton(city.name);
+const buildHistoryListItem = (cityName: any) => {
+  const newBtn = createHistoryButton(cityName.name);
   const deleteBtn = createDeleteButton();
-  deleteBtn.dataset.city = JSON.stringify(city);
+  deleteBtn.dataset.city = JSON.stringify(cityName);
   const historyDiv = createHistoryDiv();
   historyDiv.append(newBtn, deleteBtn);
   return historyDiv;
@@ -265,8 +267,8 @@ const handleSearchFormSubmit = (event: any): void => {
 
 const handleSearchHistoryClick = (event: any) => {
   if (event.target.matches('.history-btn')) {
-    const city = event.target.textContent;
-    fetchWeather(city).then(getAndRenderHistory);
+    const cityName = event.target.textContent;
+    fetchWeather(cityName).then(getAndRenderHistory);
   }
 };
 
